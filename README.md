@@ -66,7 +66,7 @@ your-project/
 │
 ├── .env                # Stores DB credentials & app environment
 ├── db.php              # Main PDO Singleton class (your project code)
-├── index.php           # Example entry point (use db.php here)
+├── test.php           # Example entry point (use db.php here)
 ├── vendor/             # Composer dependencies (autoload + dotenv)
 │   └── autoload.php
 │
