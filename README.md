@@ -59,10 +59,10 @@ touch env_logs/error.log
 ```
 
 
-##🔎 Behind the Scenes – secure-pdo-connector
+##  🔎 Behind the Scenes – secure-pdo-connector
 
-- 1. Load .env file with Dotenv
-- 2. 👉 This loads your database credentials (DB_HOST, DB_USER, etc.) from the .env file.
+-  Load .env file with Dotenv
+-  This loads your database credentials (DB_HOST, DB_USER, etc.) from the .env file.
 - It keeps sensitive data out of your code and makes it easy to change settings.
 ```php
 $dotenv = Dotenv::createImmutable(__DIR__);
