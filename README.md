@@ -50,4 +50,11 @@ DB_NAME=my_database
 DB_USER=root
 DB_PASS=secret
 DB_CHARSET=utf8mb4
+```
+
+4. Create the logs folder (if not exists):
+```
+mkdir env_logs
+touch env_logs/error.log
+```
 
