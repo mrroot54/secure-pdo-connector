@@ -38,7 +38,7 @@ It uses **PDO**, **Dotenv**, and a custom **logging + error handling** system to
 
 2. Install dependencies:
  ```bash
-  composer install
+   composer require vlucas/phpdotenv
  ```
 
 3. Create a .env file in the project root:
