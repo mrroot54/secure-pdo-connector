@@ -68,4 +68,113 @@ touch env_logs/error.log
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 ```
+## Ensure logs folder exists
+```php
+if (!is_dir(self::LOG_DIR)) {
+    mkdir(self::LOG_DIR, 0775, true);
+}
+```
 
+## Log rotation (prevent huge files)
+- If error.log becomes too large, it’s renamed with a timestamp.
+- Keeps logs clean and prevents server from filling up.
+
+```php
+if (file_exists(self::LOG_FILE) && filesize(self::LOG_FILE) > self::MAX_LOG_SIZE) {
+    rename(self::LOG_FILE, self::LOG_FILE . '.' . date('Ymd_His') . '.bak');
+}
+```
+
+## Error policy (development vs production)
+- In development → errors show on screen.
+- In production → errors are hidden (but logged).
+
+```php
+$env = $_ENV['APP_ENV'] ?? 'production';
+error_reporting(E_ALL);
+ini_set('display_errors', $env === 'development' ? '1' : '0');
+```
+
+## Catch uncaught exceptions
+- Any error your code doesn’t handle goes straight into error.log.
+- Developers see details only in development mode.
+
+```php
+set_exception_handler(function ($e) use ($env) {
+    self::log("Unhandled Exception: " . $e->getMessage());
+    if ($env === 'development') {
+        echo "<pre>" . htmlspecialchars((string)$e) . "</pre>";
+    } else {
+        echo "Something went wrong. Check logs.";
+    }
+});
+
+```
+
+## Catch PHP warnings/notices
+- Even PHP warnings and notices are safely logged.
+
+```php
+set_error_handler(function ($severity, $message, $file, $line) {
+    self::log("PHP Error [$severity] $message in $file on line $line");
+});
+```
+
+## Singleton PDO Connection
+- Database connection is created once and reused everywhere.
+- Safer + faster than opening new connections.
+```php
+$dsn = "mysql:host=$host;port=$port;dbname=$dbname;charset=$charset";
+self::$pdo = new PDO($dsn, $user, $pass, $options);
+```
+
+## Validate required env variables
+- Ensures all important database settings are provided before connecting.
+```php
+$required = ['DB_HOST','DB_PORT','DB_NAME','DB_USER','DB_PASS','DB_CHARSET'];
+foreach ($required as $k) {
+    if (empty($_ENV[$k])) {
+        throw new RuntimeException("Database configuration missing: $k");
+    }
+}
+```
+
+## Safe Logger
+- Every error or custom message goes into env_logs/error.log.
+```php
+public static function log(string $message): void {
+    $ts = date('Y-m-d H:i:s');
+    error_log("[$ts] $message" . PHP_EOL, 3, self::LOG_FILE);
+}
+
+```
+
+## Safe Query Execution
+- Queries always use prepared statements with bound parameters.
+- Prevents SQL Injection.
+
+```php
+$stmt = $pdo->prepare($sql);
+$stmt->execute($params);
+```
+
+## Helper methods for developers
+- fetchAll → get all rows
+- fetch → get one row
+- fetchColumn → get single value
+- execute → run insert/update/delete
+
+```php
+DB::fetchAll("SELECT * FROM users");
+DB::fetch("SELECT * FROM users WHERE id = :id", ['id' => 1]);
+DB::fetchColumn("SELECT COUNT(*) FROM users");
+DB::execute("DELETE FROM users WHERE id = :id", ['id' => 1]);
+```
+
+## IN() clause helper
+-  Helps safely handle WHERE id IN (...) queries without manual string building.
+
+```php
+list($placeholders, $bindings) = DB::inPlaceholders([1,2,3]);
+$sql = "SELECT * FROM users WHERE id IN ($placeholders)";
+```
