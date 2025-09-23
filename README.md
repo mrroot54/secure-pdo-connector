@@ -1,27 +1,23 @@
-# secure-pdo-connector  
+# php-secure-db-helper  
 
-A secure and reusable PHP database helper.  
-It is designed to make database work in **Core PHP projects** easier, safer, and cleaner.  
-This project uses:  
-
-- **PDO** → to connect with MySQL safely  
-- **Dotenv** → to load settings from a `.env` file (no hardcoded credentials)  
-- **Custom Logging** → errors are stored in `env_logs/error.log` with log rotation  
-- **Centralized Error Handling** → different behavior in development vs production  
-
-The goal is to help developers **quickly integrate a secure database connection** into any PHP project without repeating the same boilerplate code.  
+A **secure and reusable database helper for PHP projects**.  
+It uses **PDO**, **Dotenv**, and a custom **logging + error handling** system to make database connections safe, simple, and consistent.  
 
 ---
 
-## 🚀 Features  
+## ✨ Features  
 
-- ✅ Secure PDO connection (Singleton pattern)  
-- ✅ Load configuration from `.env` file (Dotenv)  
-- ✅ Centralized error handling (development vs production)  
-- ✅ Safe logging system (`env_logs/error.log`) with log rotation  
-- ✅ Helper methods for queries (`fetch`, `fetchAll`, `fetchColumn`, `execute`)  
-- ✅ Supports dynamic `IN()` clauses with placeholder binding  
-- ✅ Works in any Core PHP project  
+- ✅ PDO Singleton connection (no repeated connections)  
+- ✅ `.env` configuration support (no hardcoded credentials)  
+- ✅ Error handling (different for development and production)  
+- ✅ Error logging with rotation (`env_logs/error.log`)  
+- ✅ Helper functions for queries:  
+  - `DB::fetchAll()` → Get multiple rows  
+  - `DB::fetch()` → Get one row  
+  - `DB::fetchColumn()` → Get one column  
+  - `DB::execute()` → Run insert/update/delete  
+- ✅ Safe prepared statements with type binding  
+- ✅ Support for dynamic `IN()` placeholders  
 
 ---
 
@@ -37,5 +33,10 @@ The goal is to help developers **quickly integrate a secure database connection*
 
 1. Clone the repository:  
    ```bash
-   git clone https://github.com/your-username/secure-pdo-connector.git
-   cd secure-pdo-connector
+   git clone https://github.com/your-username/php-secure-db-helper.git
+   cd php-secure-db-helper
+
+2. Install dependencies:
+composer install
+
+2. Install dependencies:
