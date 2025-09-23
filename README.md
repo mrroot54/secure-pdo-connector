@@ -37,6 +37,7 @@ It uses **PDO**, **Dotenv**, and a custom **logging + error handling** system to
    cd php-secure-db-helper
 
 2. Install dependencies:
+  ```bash
 composer install
 
-2. Install dependencies:
+
