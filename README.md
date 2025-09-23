@@ -37,7 +37,17 @@ It uses **PDO**, **Dotenv**, and a custom **logging + error handling** system to
    cd php-secure-db-helper
 
 2. Install dependencies:
-  ```bash
-composer install
+ ```bash
+  composer install
+ ```
 
+3. Create a .env file in the project root:
+```bash
+APP_ENV=development
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_NAME=my_database
+DB_USER=root
+DB_PASS=secret
+DB_CHARSET=utf8mb4
 
