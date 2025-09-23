@@ -59,6 +59,25 @@ touch env_logs/error.log
 ```
 
 
+## Project File Structure
+
+```php
+your-project/
+│
+├── .env                # Stores DB credentials & app environment
+├── db.php              # Main PDO Singleton class (your project code)
+├── index.php           # Example entry point (use db.php here)
+├── vendor/             # Composer dependencies (autoload + dotenv)
+│   └── autoload.php
+│
+├── env_logs/           # Log directory (kept OUTSIDE public webroot)
+│   └── error.log       # Error & exception logs (auto-generated)
+│
+└── README.md           # Project documentation (this file)
+```
+
+
+
 ##  🔎 Behind the Scenes – secure-pdo-connector
 
 -  Load .env file with Dotenv
